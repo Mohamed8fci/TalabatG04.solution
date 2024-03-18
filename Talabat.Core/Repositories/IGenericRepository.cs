@@ -10,12 +10,15 @@ namespace Talabat.Core.Repositories
 {
     public interface IGenericRepository<T> where T : baseEntity
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        // use I readonly list because we need retrive endpoint to front end , not looping in it.
+        Task<IReadOnlyList<T>> GetAllAsync();
 
         Task<T> GetByIdAsync(int id);
 
-        Task<IEnumerable<T>> GetAllWithSpescAsync(Ispesfication<T> spec);
+        Task<IReadOnlyList<T>> GetAllWithSpescAsync(Ispesfication<T> spec);
 
         Task<T> GetByIdWithSpescAsync(Ispesfication<T> spec);
+
+        Task<int> getCountWithSpecAsync (Ispesfication<T> spec);
     }
 }

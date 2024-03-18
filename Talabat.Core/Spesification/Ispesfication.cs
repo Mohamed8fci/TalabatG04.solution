@@ -8,10 +8,19 @@ using Talabat.Core.Entities;
 
 namespace Talabat.Core.Spesificatio
 {
-    public interface Ispesfication<T> where T : baseEntity 
+    public interface Ispesfication<T> where T : baseEntity
     {
-        public Expression<Func<T,bool>> Cretiria { get; set; }
+        public Expression<Func<T, bool>> Cretiria { get; set; }
 
-        public  List<Expression<Func<T,Object>>> Include { get; set; }
+        public List<Expression<Func<T, Object>>> Include { get; set; }
+
+        public Expression<Func<T, object>> OrderBy { get; set; }
+        public Expression<Func<T, object>> OrderByDescending { get; set; }
+
+        public int Skip { get; set; }
+
+        public int Take { get; set; }
+        
+        public bool IsPaginationEnabled { get; set; }
     }
 }

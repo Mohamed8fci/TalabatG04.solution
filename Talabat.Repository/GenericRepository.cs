@@ -17,7 +17,7 @@ namespace Talabat.Repository
         public GenericRepository(StoreContext dbContext) { 
            _dbContext = dbContext;
         }
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             //if (typeof(T) == typeof(Product))
             //    return (IEnumerable<T>) await _dbContext.products.Include(p => p.ProductBrand).Include(p => p.ProductType).ToListAsync();
@@ -32,7 +32,7 @@ namespace Talabat.Repository
 
             return await _dbContext.Set<T>().FindAsync(id);
         }
-        public async Task<IEnumerable<T>> GetAllWithSpescAsync(Ispesfication<T> spec)
+        public async Task<IReadOnlyList<T>> GetAllWithSpescAsync(Ispesfication<T> spec)
         {
             return await ApplySpesfifcation(spec).ToListAsync();
         }
@@ -41,9 +41,16 @@ namespace Talabat.Repository
             return await ApplySpesfifcation(spec).FirstOrDefaultAsync();
         }
 
+        public async Task<int> getCountWithSpecAsync(Ispesfication<T> spec)
+        {
+            return await ApplySpesfifcation(spec).CountAsync();
+        }
+
         private IQueryable<T> ApplySpesfifcation(Ispesfication<T> spec)
         {
             return SpecficationEvalutor<T>.GetQuery(_dbContext.Set<T>(), spec);
         }
+
+
     }
 }
