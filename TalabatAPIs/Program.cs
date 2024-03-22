@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories;
 using Talabat.Repository;
@@ -26,7 +27,12 @@ namespace TalabatAPIs
             builder.Services.AddDbContext<StoreContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnections"));
-              });
+            });
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(option =>{
+                var connection = builder.Configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(connection);
+            });
 
             #endregion
             //builder.Services.AddScoped<IGenericRepository<Product>,GenericRepository<Product>>();
